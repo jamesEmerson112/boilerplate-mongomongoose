@@ -67,18 +67,34 @@ var findPersonById = function(personId, done) {
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
+  Person.findById(personId, (err, person) => {
+    if(err) return console.error(err);
 
-  done(null /*, data*/);
+    // Array.push()
+    person.favoriteFoods.push(foodToAdd);
+
+    // save the person
+    person.save((err, updatedPerson) => {
+      if(err) return console.error(err);
+      done(null, updatedPerson);
+    })
+  });
 };
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (err, personFound) =>{
+    if(err) return console.error(err);
+    done(null,personFound);
+  })
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove(personId, (err, personRemoved) =>
+  {
+    if(err) return console.error(err);
+    done(null, personRemoved);
+  })
 };
 
 const removeManyPeople = (done) => {
