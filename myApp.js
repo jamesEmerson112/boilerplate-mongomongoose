@@ -15,7 +15,7 @@ Person = mongoose.model('Person', personSchema);
 
 const createAndSavePerson = (done) => {
   const jamesEmerson = new Person({
-    name: "James Emerson",
+    name: "Mary",
     age: 26,
     favoriteFoods: ["Pho", "Bun", "Flan"]
   })
@@ -29,7 +29,7 @@ const createAndSavePerson = (done) => {
 };
 
 /** 4) Create many People with `Model.create()` */
-arrayOfPeople = [{name: 'Jen'},{name: 'Nick'},{name: 'Chris'},{name: '2k'}];
+arrayOfPeople = [{name: 'Mary'},{name: 'Mary'},{name: 'Chris'},{name: '2k'}];
 
 const createManyPeople = (arrayOfPeople, done) => {
   Person.create(arrayOfPeople, function(err, people){
@@ -97,10 +97,15 @@ const removeById = (personId, done) => {
   })
 };
 
-const removeManyPeople = (done) => {
-  const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+var removeManyPeople = function(done) {
+  var nameToRemove = "Mary";
+  Person.deleteMany({name: nameToRemove}, function(err, data) {
+    if (err) {
+      done(err);
+    } else {
+      done(null, data);
+    }
+  });
 };
 
 const queryChain = (done) => {
